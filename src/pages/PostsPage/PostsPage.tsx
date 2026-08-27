@@ -90,7 +90,7 @@ const PostsPage = () => {
   // Когда детали загружены — заполняем форму
   useEffect(() => {
     if (selectedPost && editingPostId !== null) {
-      console.log('🔥 selectedPost:', selectedPost); // ← ДОБАВЬ
+      console.log('🔥 selectedPost:', selectedPost);
       form.setFieldsValue({
         title: selectedPost.title,
         code: selectedPost.code,
