@@ -28,17 +28,11 @@ import {
 } from '../../store/slices/postsSlice';
 import dayjs from 'dayjs';
 import styles from './PostsPage.module.css';
-import type { Post } from '../../api/types';
+import type { Post, PostFormValues } from '../../api/types';
+import { fetchAuthorsRequest } from '../../store/slices/authorsSlice';
+import { fetchTagsRequest } from '../../store/slices/tagsSlice';
 
 const { Option } = Select;
-
-interface PostFormValues {
-  title: string;
-  code: string;
-  authorId: number;
-  tagIds: number[];
-  text: string;
-}
 
 const PostsPage = () => {
   const dispatch = useDispatch();
@@ -69,9 +63,13 @@ const PostsPage = () => {
     return uploadFiles;
   }, [selectedPost, editingPostId, uploadFiles]);
 
-  // Загружаем посты при монтировании
   useEffect(() => {
     dispatch(fetchPostsRequest({ page: 1, limit: 10 }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchAuthorsRequest());
+    dispatch(fetchTagsRequest());
   }, [dispatch]);
 
   // Показываем ошибку если есть
@@ -92,11 +90,12 @@ const PostsPage = () => {
   // Когда детали загружены — заполняем форму
   useEffect(() => {
     if (selectedPost && editingPostId !== null) {
+      console.log('🔥 selectedPost:', selectedPost); // ← ДОБАВЬ
       form.setFieldsValue({
         title: selectedPost.title,
         code: selectedPost.code,
-        authorId: selectedPost.authorId,
-        tagIds: selectedPost.tagIds,
+        authorId: selectedPost.author.id,
+        tagIds: selectedPost.tags?.map((tag) => tag.id) || [],
         text: selectedPost.text,
       });
     }
@@ -141,7 +140,12 @@ const PostsPage = () => {
     }
 
     if (editingPostId) {
-      dispatch(editPostRequest({ id: editingPostId, data: formData }));
+      dispatch(
+        editPostRequest({
+          id: editingPostId,
+          data: values,
+        }),
+      );
     } else {
       dispatch(addPostRequest(formData));
     }
@@ -326,7 +330,7 @@ const PostsPage = () => {
               fileList={fileList}
               beforeUpload={() => false}
               onChange={({ fileList: newFileList }) => {
-                setUploadFiles(newFileList); // ← обновляем только новые файлы
+                setUploadFiles(newFileList);
               }}
               onRemove={() => {
                 setUploadFiles([]);

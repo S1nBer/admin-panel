@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Post, PostDetail, PostsResponse } from '../../api/types';
+import type { Post, PostDetail, PostFormValues, PostsResponse } from '../../api/types';
 
 interface PostsState {
   posts: Post[];
@@ -74,7 +74,7 @@ const postsSlice = createSlice({
     },
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    editPostRequest: (state, _action: PayloadAction<{ id: number; data: FormData }>) => {
+    editPostRequest: (state, _action: PayloadAction<{ id: number; data: PostFormValues }>) => {
       state.loading = true;
       state.error = null;
     },

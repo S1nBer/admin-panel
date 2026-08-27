@@ -51,14 +51,31 @@ export interface Post {
 }
 
 export interface PostDetail extends Post {
-  authorId: number;
-  tagIds: number[];
+  author: {
+    id: number;
+    fullName: string;
+    avatar: string | null;
+  };
+  tags: {
+    id: number;
+    name: string;
+    code: string;
+  }[];
   text: string;
 }
 
 export interface PostsResponse {
   data: Post[];
   pagination: PaginationMeta;
+}
+
+export interface PostFormValues {
+  title: string;
+  code: string;
+  authorId: number;
+  tagIds: number[];
+  text: string;
+  previewPicture?: File | null;
 }
 
 export interface Tag {

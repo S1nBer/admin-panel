@@ -35,7 +35,6 @@ function* loginSaga(action: ReturnType<typeof loginRequest>): SagaType {
 }
 
 function* logoutSaga(): SagaType {
-  yield put(logout());
   yield put(push('/login'));
   message.info('Вы вышли из системы');
 }

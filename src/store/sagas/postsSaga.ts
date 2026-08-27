@@ -26,14 +26,12 @@ import type { PaginationMeta, ValidationError } from '../../api/types';
 function* fetchPostsSaga(action: ReturnType<typeof fetchPostsRequest>): SagaType {
   try {
     const { page, limit = 10 } = action.payload;
-    // @ts-expect-error - redux-saga call types не дружат с методами объектов
-    const response = (yield call(postsApi.getPosts, page, limit)) as Awaited<
+    const response = (yield call(postsApi.getPosts, { page, limit })) as Awaited<
       ReturnType<typeof postsApi.getPosts>
     >;
     yield put(fetchPostsSuccess(response));
   } catch (error) {
     const axiosError = error as AxiosError;
-
     yield put(fetchPostsFailure(axiosError.message || 'Ошибка загрузки постов'));
     message.error('Не удалось загрузить посты');
   }
@@ -92,19 +90,33 @@ function* editPostSaga(action: ReturnType<typeof editPostRequest>): SagaType {
   try {
     const { id, data } = action.payload;
 
-    yield call(postsApi.editPost, id, data);
+    const formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('code', data.code);
+    formData.append('authorId', String(data.authorId));
+    formData.append('text', data.text);
+
+    if (data.tagIds && data.tagIds.length > 0) {
+      data.tagIds.forEach((tagId) => {
+        formData.append('tagIds[]', String(tagId));
+      });
+    }
+
+    if (data.previewPicture) {
+      formData.append('previewPicture', data.previewPicture);
+    }
+
+    yield call(postsApi.editPost, id, formData);
     yield put(editPostSuccess());
     message.success('Пост обновлён');
 
     const pagination = (yield select(
       (state: RootState) => state.posts.pagination,
     )) as PaginationMeta;
-
     yield put(fetchPostsRequest({ page: pagination.current, limit: pagination.limit }));
   } catch (error) {
     const axiosError = error as AxiosError<{ message?: string }>;
     const errorMessage = axiosError.response?.data?.message || 'Ошибка обновления поста';
-
     yield put(editPostFailure(errorMessage));
     message.error(errorMessage);
   }
