@@ -1,0 +1,75 @@
+.container {
+  padding: 40px;
+}
+
+.title {
+  margin-bottom: 32px;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.grid {
+  margin-top: 0;
+}
+
+.card {
+  height: 100%;
+  text-align: center;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.cardIcon {
+  margin-bottom: 16px;
+  font-size: 48px;
+}
+
+.cardTitle {
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.cardDescription {
+  color: #666;
+  font-size: 16px;
+}
+
+.cardPosts {
+  background-color: #e6f7ff;
+}
+
+.cardPosts .cardIcon {
+  color: #1890ff;
+}
+
+.cardAuthors {
+  background-color: #f6ffed;
+}
+
+.cardAuthors .cardIcon {
+  color: #52c41a;
+}
+
+.cardTags {
+  background-color: #fffbe6;
+}
+
+.cardTags .cardIcon {
+  color: #faad14;
+}

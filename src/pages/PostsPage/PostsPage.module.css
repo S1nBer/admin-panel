@@ -1,0 +1,35 @@
+.container {
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.tableWrapper {
+  background: #fff;
+  border-radius: 8px;
+}
+
+.modalForm {
+  padding-top: 8px;
+}
+
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.uploadText {
+  margin-top: 8px;
+}
